@@ -1,0 +1,62 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function: Check if the authenticated user is an authorized Store Admin
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isStoreAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.email == 'mohamedhawary891@gmail.com' ||
+        request.auth.token.email == 'admin@hawaristore.com' ||
+        request.auth.token.email == 'hawary@hawaristore.com' ||
+        request.auth.token.admin == true
+      );
+    }
+
+    // 1. Books Collection: public catalog, administrators manage it.
+    match /books/{bookId} {
+      allow read: if true;
+      allow create, update, delete: if isStoreAdmin();
+    }
+
+    // 2. Orders Collection: Customers can create and read their own orders; Admins have full access
+    match /orders/{orderId} {
+      allow read: if isStoreAdmin() || (isAuthenticated() && (
+        resource.data.userId == request.auth.uid || 
+        resource.data.customerEmail == request.auth.token.email
+      ));
+      allow create: if true;
+      allow update, delete: if isStoreAdmin();
+    }
+
+    // 3. Users Collection: users may manage their own profile, but may not
+    // grant themselves the administrator role.
+    match /users/{userId} {
+      allow read: if isStoreAdmin() || (isAuthenticated() && request.auth.uid == userId);
+      allow create: if isStoreAdmin() || (
+        isAuthenticated() && request.auth.uid == userId &&
+        request.resource.data.role == 'customer'
+      );
+      allow update: if isStoreAdmin() || (
+        isAuthenticated() && request.auth.uid == userId &&
+        request.resource.data.role == resource.data.role
+      );
+      allow delete: if isStoreAdmin();
+    }
+
+    // 4. Settings Collection: Public configuration read, Admin-only write
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isStoreAdmin();
+    }
+
+    // 5. Notifications Collection: Public/User read, Admin-only dispatch
+    match /notifications/{notifId} {
+      allow read: if true;
+      allow write: if isStoreAdmin();
+    }
+  }
+}

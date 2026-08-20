@@ -1,0 +1,6 @@
+{
+  "name": "متجر هواري | Hawari Store",
+  "description": "منصة متجر هواري لبيع الكتب الورقية والإلكترونية الآمنة مع قارئ PDF محمي وحساب دقيق لأسعار الشحن لجميع المحافظات ولوحة تحكم متطورة.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

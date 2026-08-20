@@ -1,0 +1,50 @@
+{
+  "entities": {
+    "books": {
+      "title": "Book",
+      "description": "Store physical and encrypted digital books catalog",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "author": { "type": "string" },
+        "category": { "type": "string" },
+        "format": { "type": "string", "enum": ["physical", "digital", "both"] },
+        "price": { "type": "number" },
+        "hasDiscount": { "type": "boolean" },
+        "discountPrice": { "type": "number" },
+        "description": { "type": "string" },
+        "coverImage": { "type": "string" },
+        "pdfFileName": { "type": "string" },
+        "pdfDataUrl": { "type": "string" },
+        "fileSize": { "type": "string" },
+        "pages": { "type": "number" },
+        "samplePagesCount": { "type": "number" },
+        "stock": { "type": "number" },
+        "featured": { "type": "boolean" },
+        "isbn": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["title", "author", "price", "category", "format"]
+    },
+    "orders": {
+      "title": "Order",
+      "description": "Customer purchase orders for physical and digital books",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "customerName": { "type": "string" },
+        "customerPhone": { "type": "string" },
+        "customerEmail": { "type": "string" },
+        "governorate": { "type": "string" },
+        "address": { "type": "string" },
+        "paymentMethod": { "type": "string" },
+        "totalAmount": { "type": "number" },
+        "status": { "type": "string" }
+      },
+      "required": ["customerName", "customerPhone", "totalAmount", "status"]
+    }
+  }
+}
