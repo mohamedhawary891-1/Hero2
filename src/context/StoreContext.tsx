@@ -24,7 +24,6 @@ import {
   getStoredNotifications,
   saveStoredNotifications,
   isUserAdmin,
-  DEFAULT_SETTINGS,
   INITIAL_USERS,
   saveBookToFirestore,
   deleteBookFromFirestore,
@@ -156,7 +155,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [allUsers, setAllUsers] = useState<UserProfile[]>([]);
   const [notifications, setNotifications] = useState<SiteNotification[]>([]);
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
-  const [settings, setSettings] = useState<StoreSettings>(DEFAULT_SETTINGS);
+  const [settings, setSettings] = useState<StoreSettings>(() => getStoreSettings());
 
   // UI modal states
   const [isCartOpen, setIsCartOpen] = useState(false);
